@@ -1,2 +1,3 @@
 # overlay
-a collaborative overlay utility for streaming
+
+A collaborative overlay utility for streaming. Still in early phases of development.
