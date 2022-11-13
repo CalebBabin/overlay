@@ -1,7 +1,13 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-	name: String,
+	username: String,
+});
+
+UserSchema.index({
+	username: 1,
+}, {
+	unique: true
 });
 
 const UserModel = mongoose.model("User", UserSchema);

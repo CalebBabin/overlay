@@ -5,5 +5,12 @@ const SceneSchema = new mongoose.Schema({
 	name: String,
 });
 
+SceneSchema.index({
+	channel: 1,
+	name: 1,
+}, {
+	unique: true
+});
+
 const SceneModel = mongoose.model("Scene", SceneSchema);
 export default SceneModel;
