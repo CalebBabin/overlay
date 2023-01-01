@@ -1,14 +1,3 @@
-import fs from "fs";
-
-if (!fs.existsSync('./tmp')) {
-	fs.mkdirSync('./tmp');
-}
-if (!fs.existsSync('./tmp/channels')) {
-	fs.mkdirSync('./tmp/channels');
-}
-
-console.log(`${fs.readdirSync('./tmp/channels').length} channels detected`);
-
 export class Channel {
 	/**
 	 * Stores and retrieves saved channel data and configuration, validates users
@@ -16,50 +5,31 @@ export class Channel {
 	 * @param {string} name A uniquely identifying channel name or some other identifier
 	 */
 	constructor(name) {
-		this.data = {
-			name,
-			users: [],
-			elements: [],
-		};
-		this.cacheDirectory = './tmp/channels/' + name + '.json';
-		this.load();
+		this.name = name;
+		this.users = [];
+		this.elements = [];
 	}
 
-	load() {
-		if (fs.existsSync(this.cacheDirectory)) {
-			const cachedData = JSON.parse(
-				fs.readFileSync(this.cacheDirectory)
-			);
+	checkElements() {
 
-			this.data = {
-				...this.data,
-				...cachedData,
-			}
-		};
 	}
 
-
-	/**
-	 * saves the current state to disk
-	 */
-	save() {
-		fs.writeFileSync(
-			this.cacheDirectory,
-			JSON.stringify(this.data, null, 4),
-			{
-				encoding: 'utf-8',
-			}
-		)
+	startIntervals() {
+		this.interval = setInterval(() => {
+			this.checkElements();
+		}, 1000 * 10);
 	}
 
 	getDefaultElement() {
 		return {
 			id: uuidv4(),
 			tag: 'div',
-			x: 1920 / 2,
-			y: 1080 / 2,
-			width: 100,
-			height: 100,
+			style: {
+				x: 1920 / 2,
+				y: 1080 / 2,
+				width: 100,
+				height: 100,
+			}
 		}
 	}
 
@@ -78,9 +48,11 @@ export class Channel {
 						element.data[key] = value;
 					}
 				}
+				element.needsUpdate = true;
+				return true;
 			}
 		}
-		this.save();
+		return false;
 	}
 
 	/**

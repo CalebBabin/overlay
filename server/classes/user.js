@@ -1,14 +1,3 @@
-import fs from "fs";
-
-if (!fs.existsSync('./tmp')) {
-	fs.mkdirSync('./tmp');
-}
-if (!fs.existsSync('./tmp/users')) {
-	fs.mkdirSync('./tmp/users');
-}
-
-console.log(`${fs.readdirSync('./tmp/users').length} users detected`);
-
 export class User {
 	/**
 	 * Stores and retrieves saved user data and configuration
